@@ -1,0 +1,23 @@
+#!/usr/bin/bash
+rm -f ./copy_ssh_errors.txt
+touch ./copy_ssh_errors.txt
+while read line
+do
+	LIGNE_LISTE_HOSTS=$line
+	echo "LIGNE_LISTE_HOSTS : $LIGNE_LISTE_HOSTS"
+	OS_MACHINE=`echo $line | awk -F ';' '{ print $2 }' | cut -c 7`
+	HOST_NAME=`echo $LIGNE_LISTE_HOSTS | awk -F ';' '{ print $1 }'`
+	#if [[ "$OS_MACHINE" == "l" ]]; then
+		ping -c 2 $HOST_NAME
+		CODRET=$?
+		if (($CODRET == 0)); then
+			ssh-copy-id $HOST_NAME
+			CODRET=$?
+			if (($CODRET != 0)); then
+				echo $LIGNE_LISTE_HOSTS" - ssh impossible" >> ./copy_ssh_errors.txt
+			fi
+		else
+			echo $LIGNE_LISTE_HOSTS" - Ping impossible" >> ./copy_ssh_errors.txt
+		fi
+	#fi
+done < ./list_servers.lst
