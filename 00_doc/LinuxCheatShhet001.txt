@@ -1,0 +1,52 @@
+UNIX
+Aliases
+List all files sorted by reverse date (page display)
+alias alert='ls -alrt | more'
+Using "ducks to hunt space hogs" : du amélioré
+alias ducks='du -cksx * | sort -rn | head -10'
+Liste les 10 plus gros fichiers/sous-répertoires du répertoire courant
+NB : ne fonctionne pas sur tous les *nix (nécessite une version récente de du et de sort)
+remove old files in a directory (/!\ Très dangereux)
+find /PATH/TO/FILES* -maxdepth 1 -type f -name "PATTERN" -mtime +DAYS -exec rm -f {} \;
+exemple : tous les fichiers *.log vieux de plus de 30 jours, dans le répertoire courant
+find . -maxdepth 1 -type f -name "*.log" -mtime +30 -exec echo {} \;
+find . -maxdepth 1 -type f -name "*.log" -mtime +30 -exec rm -f {} \;
+Open file deletion issue (why DF and DU report different values)
+Si un fichier est supprimé (rm) alors qu'il est ouvert, UNIX ne supprime pas son INODE. Il faudra alors killer le process qui l'utilise, en l'identifiant via la comande lsof
+/usr/sbin/lsof | grep "nom_du_point_de_montage"
+Références :
+http://www.linuxquestions.org/questions/linux-general-1/different-results-in-du-and-df-841145/
+http://www.cyberciti.biz/tips/freebsd-why-command-df-and-du-reports-different-output.html
+Delete yum cache (on RHEL)
+Le FS ne doit pas être plein pour que cete commande puisse fonctionner.
+yum --enablerepo=* clean all
+Référence : http://forums.fedoraforum.org/showthread.php?t=308325
+Rsync
+rsync synchronizes in one direction from source to destination. Therefore the following statement
+rsync -avh --progress Source Destination
+syncs everything from Source to Destination. The merged folder resides in Destination.
+-a means "archive" and copies everything recursively from source to destination preserving nearly everything.
+-v gives more output ("verbose").
+-h for human readable.
+--progress to show how much work is done.
+If you want to only update the destination folder with newer files from source folder:
+rsync -avhu --progress Source Destination
+Référence : http://unix.stackexchange.com/questions/149965/how-to-copy-merge-two-directories
+WINDOWS
+Windows 10 Privacy tweaker
+http://www.winprivacy.de/english-home/
+Alternatives : http://alternativeto.net/software/w10privacy/
+Comparatif : http://www.ghacks.net/2015/08/14/comparison-of-windows-10-privacy-tools/
+Remove files under winsxs directory
+https://blogs.technet.microsoft.com/askpfeplat/2014/05/13/how-to-clean-up-the-winsxs-directory-and-free-up-disk-space-on-windows-server-2008-r2-with-new-update/
+Fix too small applications on a very large screen
+http://winaero.com/blog/how-to-fix-apps-that-look-small-on-high-dpi-and-high-resolution-displays/
+Oracle
+Export de données au format csv
+http://combot.univ-tln.fr/loris/admin/sqlplus/formatage.html
+http://nevilleandrade.wordpress.com/2013/06/10/sqlplus-output-to-csv-file/
+http://luckylarry.co.uk/programming-tutorials/oracle/spool-a-csv-file-from-oracle-sqlplus-without-quotes/
+Référence (site d'Oracle) : https://docs.oracle.com/cd/B19306_01/server.102/b14357/ch12040.htm
+Lister les objets invalides de la base Oracle
+SQL> SELECT owner, object_type, object_name, status FROM dba_objects WHERE status = 'INVALID';
+http://droe-dba.over-blog.fr/article-compiler-objets-invalides-oracle-108545624.html
