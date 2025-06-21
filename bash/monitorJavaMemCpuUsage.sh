@@ -4,5 +4,4 @@ touch monitorJavaMemCpuUsage.log
 
 # ps aux --sort=+pid | awk 'NR==1 || /[j]ava/' >> monitorJavaMemCpuUsage.log
 echo "-----------------------------------------------" >> monitorJavaMemCpuUsage.log
-date +%Y"-"%m"-"%d"_"%H"."%M"."%S >> monitorJavaMemCpuUsage.log
-ps -eo pid,%mem,%cpu,command --sort=pid | awk 'NR==1 || /[j]ava/' >> monitorJavaMemCpuUsage.log
+ps -eo pid,%mem,%cpu,command --sort=pid | awk 'NR==1 || /[j]ava/' | sed "s#^#$(date +%Y"-"%m"-"%d"_"%H"."%M"."%S) #" >> monitorJavaMemCpuUsage.log
